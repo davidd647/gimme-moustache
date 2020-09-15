@@ -10,3 +10,15 @@
 .icon-selected {
   background: rgba(0, 0, 0, 0.5);
 }
+
+#saved {
+  max-width: 800px;
+  height: 150px;
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+#saved > img {
+  background: white;
+  max-width: 200px;
+}

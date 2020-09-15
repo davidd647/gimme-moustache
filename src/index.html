@@ -12,9 +12,10 @@
   <body style="background: #ddd;">
     <div class="container">
       <h1>Gimme Moustache</h1>
+      <img src="#" alt="Pic" id="test">
       <p>What's the best thing to draw? Moustaches on people.</p>
       <ol>
-        <li>Click <a href="#">here</a> for a new face</li>
+        <li>Click <a href="#" id="newface">here</a> for a new face</li>
         <li>Draw a moustache on their face</li>
         <li>?????.... profit!!!</li>
       </ol>
@@ -45,8 +46,12 @@
           <label for="opacity">Opacity:</label>
           <input id="opacity" type="range" id="vol" name="vol" min="0" max="100" value="100">
         </div>
+        <div class="icon-container" id="save">
+          <img class="p-1" src="icons/save.png" alt="Save" />
+        </div>
       </div>
       <canvas id="draw" style="background: #fff"></canvas>
+      <div id="saved" class="pt-3"></div>
     </div>
 
     <div class="container pt-3">

@@ -1,4 +1,4 @@
-console.log("hi");
+import $ from "jquery";
 
 const canvas = document.querySelector("#draw");
 const ctx = canvas.getContext("2d");
@@ -117,6 +117,17 @@ const spray = document.getElementById("spray");
 const eraser = document.getElementById("eraser");
 const rectangle = document.getElementById("rectangle");
 const circle = document.getElementById("circle");
+const save = document.getElementById("save");
+const savedContainer = document.getElementById("saved");
+
+const snapshots = JSON.parse(localStorage.getItem("snapshots")) || [];
+
+snapshots.forEach((snapshot) => {
+  const div = document.createElement("img");
+  div.src = snapshot;
+  div.classList.add("mr-2");
+  savedContainer.insertBefore(div, savedContainer.firstChild);
+});
 
 let tool = "pencil";
 
@@ -168,6 +179,55 @@ circle.addEventListener("click", function (e) {
 
   tool = this.id;
 });
+save.addEventListener("click", function () {
+  // convert canvas snapshot into data for a variable...
+  //  (( https://stackoverflow.com/questions/16792805/how-to-take-screenshot-of-canvas ))
+  var dataURL = canvas.toDataURL();
+
+  // save image to localStorage...
+  // localStorage.setItem("snapshots", dataURL);
+  // JSON.stringify
+  snapshots.push(dataURL);
+  console.log(snapshots);
+  localStorage.setItem("snapshots", JSON.stringify(snapshots));
+  // localStorage.getItem
+  // localStorage.removeItem
+
+  console.log("savedContainer is:");
+  console.log(savedContainer);
+  // console.log(dataURL);
+  // add div to .savedContainer...
+  const div = document.createElement("img");
+  div.src = dataURL;
+  div.classList.add("mr-2");
+  savedContainer.insertBefore(div, savedContainer.firstChild);
+});
 
 const color = document.getElementById("color");
 const opacity = document.getElementById("opacity");
+
+const test = document.getElementById("test");
+
+function newImage() {
+  $.ajax({
+    url: "https://randomuser.me/api/",
+    dataType: "json",
+    success: function (data) {
+      const src = data.results[0].picture.large;
+      console.log(src);
+      test.src = src;
+      // const image = new Image();
+      // image.src = data.results[0].picture.large;
+      ctx.drawImage(test, 0, 0);
+    },
+  });
+}
+
+newImage();
+
+const newFace = document.getElementById("newface");
+
+newFace.addEventListener("click", function (e) {
+  newImage();
+  ctx.drawImage(test, 0, 0, 800, 600);
+});
