@@ -1,0 +1,104 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Gimme Moustache</title>
+  </head>
+  <body style="background: #ddd;">
+    <div class="container">
+      <h1>Gimme Moustache</h1>
+      <p>What's the best thing to draw? Moustaches on people.</p>
+      <ol>
+        <li>Click <a href="#">here</a> for a new face</li>
+        <li>Draw a moustache on their face</li>
+        <li>?????.... profit!!!</li>
+      </ol>
+      <div class="d-flex">
+        <div class="icon-container icon-selected" id="pencil">
+          <img class="p-1" src="icons/pencil.png" alt="Pencil" />
+        </div>
+        <div class="icon-container" id="line">
+          <img class="p-1" src="icons/line.png" alt="Line" />
+        </div>
+        <div class="icon-container" id="spray">
+          <img class="p-1" src="icons/spray.png" alt="Spray Paint" />
+        </div>
+        <div class="icon-container" id="eraser">
+          <img class="p-1" src="icons/eraser.png" alt="Eraser" />
+        </div>
+        <div class="icon-container" id="rectangle">
+          <img class="p-1" src="icons/box.png" alt="Rectangle" />
+        </div>
+        <div class="icon-container" id="circle">
+          <img class="p-1" src="icons/circle.png" alt="Circle" />
+        </div>
+        <div class="">
+          <input type="color" id="color" name="head"
+            value="#e66465">
+        </div>
+        <div class="">
+          <label for="opacity">Opacity:</label>
+          <input id="opacity" type="range" id="vol" name="vol" min="0" max="100" value="100">
+        </div>
+      </div>
+      <canvas id="draw" style="background: #fff"></canvas>
+    </div>
+
+    <div class="container pt-3">
+      <h2>What is this?</h2>
+
+      <p>
+        This is Gimme Moustache was an an experimental web-based art app made
+        for a Mintbean hackathon.
+      </p>
+
+      <h2>Why did you make it?</h2>
+
+      <p>
+        My fondest memories of making art are mostly of drawing moustaches on
+        people on newspapers and magazines. Ah, the 90's - it was a different
+        world then. I wanted to see if it was as fun to draw moustaches on
+        people online as it was to do it offline, back in the day.
+      </p>
+
+      This project was also a submission for a Mintbean hackathon.
+
+      <h2>Where is Mintbean?</h2>
+
+      <p>
+        Mintbean is an internet-based hackathon initiative. They host hackathons
+        every week to help developers and recruiters find each other, and
+        encourage continual learning.
+      </p>
+
+      <h2>When was it made?</h2>
+
+      <p>Submitted September 16th, 2020.</p>
+
+      <h2>Who made it?</h2>
+
+      <p>Me! David Dales.</p>
+      
+      <small>
+        <p>
+          <div>
+            Icons made by 
+            <a href="https://www.flaticon.local/authors/freepik" title="Freepik">
+              Freepik
+            </a> 
+            from 
+            <a href="https://www.flaticon.local/" title="Flaticon">
+              www.flaticon.local
+            </a>
+          </div>
+        </p>
+      </small>
+    </div>
+  </body>
+  <script src="./index.js"></script>
+</html>

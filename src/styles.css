@@ -1,0 +1,12 @@
+.icon-container {
+  max-height: 25px;
+  max-width: 25px;
+}
+.icon-container > img {
+  max-height: 25px;
+  max-width: 25px;
+}
+
+.icon-selected {
+  background: rgba(0, 0, 0, 0.5);
+}
