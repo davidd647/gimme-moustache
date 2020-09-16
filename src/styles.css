@@ -5,6 +5,7 @@ h1 {
 .icon-container {
   max-height: 25px;
   max-width: 25px;
+  cursor: pointer;
 }
 .icon-container > img {
   max-height: 25px;
