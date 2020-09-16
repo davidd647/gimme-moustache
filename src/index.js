@@ -166,9 +166,10 @@ var gimmeMoustache = {
     this.canvas.addEventListener("touchmove", (e) =>
       this.handleMouseMove(this, e)
     );
-    this.canvas.addEventListener("touchstart", (e) =>
-      this.handleMouseDown(this, e)
-    );
+    this.canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      this.handleMouseDown(this, e);
+    });
     this.canvas.addEventListener("touchend", (e) =>
       this.handleMouseUp(this, e)
     );
@@ -236,7 +237,7 @@ var gimmeMoustache = {
 
     this.addEventListeners();
 
-    this.addImage();
+    // this.addImage();
   },
 };
 
