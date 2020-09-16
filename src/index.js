@@ -150,6 +150,7 @@ var gimmeMoustache = {
   },
 
   addEventListeners() {
+    // desk/laptops
     this.canvas.addEventListener("mousemove", (e) =>
       this.handleMouseMove(this, e)
     );
@@ -158,6 +159,17 @@ var gimmeMoustache = {
     );
     this.canvas.addEventListener("mouseup", (e) => this.handleMouseUp(this, e));
     this.canvas.addEventListener("mouseout", (e) =>
+      this.handleMouseUp(this, e)
+    );
+
+    // touch screens
+    this.canvas.addEventListener("touchmove", (e) =>
+      this.handleMouseMove(this, e)
+    );
+    this.canvas.addEventListener("touchstart", (e) =>
+      this.handleMouseDown(this, e)
+    );
+    this.canvas.addEventListener("touchend", (e) =>
       this.handleMouseUp(this, e)
     );
 
