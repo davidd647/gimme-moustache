@@ -163,14 +163,14 @@ var gimmeMoustache = {
     );
 
     // touch screens
-    this.canvas.addEventListener("touchmove", (e) =>
+    this.canvas.addEventListener("ontouchmove", (e) =>
       this.handleMouseMove(this, e)
     );
-    this.canvas.addEventListener("touchstart", (e) => {
+    this.canvas.addEventListener("ontouchstart", (e) => {
       e.preventDefault();
       this.handleMouseDown(this, e);
     });
-    this.canvas.addEventListener("touchend", (e) =>
+    this.canvas.addEventListener("ontouchend", (e) =>
       this.handleMouseUp(this, e)
     );
 
