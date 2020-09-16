@@ -29,6 +29,7 @@ var gimmeMoustache = {
   // default tool
   currentTool: "pencil",
   isDrawing: false,
+  snapshots: [],
 
   continuous(e) {
     if (!this.isDrawing) return;
@@ -141,12 +142,12 @@ var gimmeMoustache = {
     // Tainted canvases may not be exported.
     var dataURL = this.canvas.toDataURL();
 
-    snapshots.push(dataURL);
-    localStorage.setItem("snapshots", JSON.stringify(snapshots));
+    this.snapshots.push(dataURL);
+    localStorage.setItem("snapshots", JSON.stringify(this.snapshots));
     const div = document.createElement("img");
     div.src = dataURL;
     div.classList.add("mr-2");
-    savedContainer.insertBefore(div, savedContainer.firstChild);
+    this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
   },
 
   addEventListeners() {
@@ -222,6 +223,7 @@ var gimmeMoustache = {
         console.log(json.urls.small);
 
         var image = new Image();
+        image.crossOrigin = "Anonymous";
 
         console.log(image);
 
@@ -249,6 +251,15 @@ var gimmeMoustache = {
     this.ctx.lineWidth = 3;
 
     this.addEventListeners();
+
+    this.snapshots = JSON.parse(localStorage.getItem("snapshots")) || [];
+
+    this.snapshots.forEach((snapshot) => {
+      const div = document.createElement("img");
+      div.src = snapshot;
+      div.classList.add("mr-2");
+      this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
+    });
 
     this.addImage();
   },
