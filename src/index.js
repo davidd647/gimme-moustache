@@ -173,7 +173,7 @@ var gimmeMoustache = {
         });
         canvas.dispatchEvent(mouseEvent);
       },
-      false
+      true
     );
     this.canvas.addEventListener(
       "touchstart",
@@ -187,7 +187,7 @@ var gimmeMoustache = {
         });
         canvas.dispatchEvent(mouseEvent);
       },
-      false
+      true
     );
     this.canvas.addEventListener(
       "touchend",
@@ -195,7 +195,7 @@ var gimmeMoustache = {
         var mouseEvent = new MouseEvent("mouseup", {});
         canvas.dispatchEvent(mouseEvent);
       },
-      false
+      true
     );
 
     this.pencil.addEventListener("click", (e) => this.selectTool("pencil"));
