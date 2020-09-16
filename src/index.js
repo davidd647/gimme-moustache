@@ -1,233 +1,195 @@
-import $ from "jquery";
+import Unsplash, { toJson } from "unsplash-js";
 
-const canvas = document.querySelector("#draw");
-const ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 600;
-ctx.strokeStyle = "#000000";
-ctx.lineJoin = "round";
-ctx.lineCap = "round";
-ctx.lineWidth = 3;
+var gimmeMoustache = {
+  canvas: document.querySelector("#draw"),
+  ctx: null,
 
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
+  isDrawing: false,
+  lastX: 0,
+  lastY: 0,
 
-let startedDrawing = false;
-let firstXCoord = 0;
-let firstYCoord = 0;
+  startedDrawing: false,
+  firstXCoord: 0,
+  firstYCoord: 0,
 
-function draw(e) {
-  if (!isDrawing) return;
+  pencil: document.getElementById("pencil"),
+  line: document.getElementById("line"),
+  spray: document.getElementById("spray"),
+  eraser: document.getElementById("eraser"),
+  rect: document.getElementById("rectangle"),
+  circle: document.getElementById("circle"),
+  save: document.getElementById("save"),
+  savedContainer: document.getElementById("saved"),
 
-  if (tool === "spray") {
-    ctx.strokeStyle = color.value;
-    ctx.globalAlpha = opacity.value / 100;
-  } else if (tool === "pencil") {
-    ctx.strokeStyle = "#000000";
-    ctx.globalAlpha = opacity.value / 100;
-  } else if (tool === "eraser") {
-    ctx.strokeStyle = "#FFFFFF";
-    ctx.globalAlpha = 1;
-  }
+  color: document.getElementById("color"),
+  opacity: document.getElementById("opacity"),
 
-  if (tool === "pencil" || tool === "spray" || tool === "eraser") {
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
+  // default tool
+  currentTool: "pencil",
+  isDrawing: false,
 
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-  }
-}
+  selectTool(toolSelected) {
+    document.querySelector(".icon-selected").classList.remove("icon-selected");
+    document.getElementById(toolSelected).classList.add("icon-selected");
 
-function drawBox(x1, y1, x2, y2) {
-  ctx.strokeStyle = color.value;
-  ctx.beginPath();
-  ctx.rect(x1, y1, x2 - x1, y2 - y1);
-  ctx.globalAlpha = opacity.value / 100;
-  ctx.stroke();
-}
+    this.currentTool = toolSelected;
+  },
 
-function drawCircle(x1, y1, x2, y2) {
-  ctx.strokeStyle = color.value;
-  ctx.beginPath();
-  // radius is hypoteneus of a triangle if you're given x1,y1 and x2,y2
-  // from h^2 = x^2 + y^2, we can rearrange for the following equation:
-  const radius = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-  ctx.arc(x1, y1, radius, 0, 2 * Math.PI);
-  ctx.globalAlpha = opacity.value / 100;
-  ctx.stroke();
-}
+  continuousDraw(e) {
+    if (!this.isDrawing) return;
 
-canvas.addEventListener("mousemove", draw);
-
-canvas.addEventListener("mousedown", (e) => {
-  isDrawing = true;
-  [lastX, lastY] = [e.offsetX, e.offsetY];
-
-  if (tool === "line" || tool === "rectangle" || tool === "circle") {
-    if (!startedDrawing) {
-      firstXCoord = e.offsetX;
-      firstYCoord = e.offsetY;
-      startedDrawing = true;
+    if (this.currentTool === "spray" || this.currentTool === "pencil") {
+      this.ctx.strokeStyle = color.value;
+      this.ctx.globalAlpha = opacity.value / 100;
+    } else if (this.currentTool === "eraser") {
+      this.ctx.strokeStyle = "#FFFFFF";
+      this.ctx.globalAlpha = 1;
     }
-  }
-});
-canvas.addEventListener("mouseup", (e) => {
-  isDrawing = false;
-  console.log(tool);
-  if (startedDrawing && tool === "line") {
-    ctx.strokeStyle = color.value;
-    ctx.beginPath();
-    ctx.moveTo(firstXCoord, firstYCoord);
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.globalAlpha = opacity.value / 100;
-    ctx.stroke();
-    startedDrawing = false;
-  } else if (startedDrawing && tool === "rectangle") {
-    drawBox(firstXCoord, firstYCoord, e.offsetX, e.offsetY);
-    startedDrawing = false;
-  } else if (startedDrawing && tool === "circle") {
-    drawCircle(firstXCoord, firstYCoord, e.offsetX, e.offsetY);
-    startedDrawing = false;
-  }
-});
-canvas.addEventListener("mouseout", (e) => {
-  isDrawing = false;
-  if (startedDrawing && tool === "line") {
-    ctx.beginPath();
-    ctx.moveTo(firstXCoord, firstYCoord);
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.globalAlpha = opacity.value / 100;
-    ctx.stroke();
-    startedDrawing = false;
-  } else if (startedDrawing && tool === "rectangle") {
-    drawBox(firstXCoord, firstYCoord, e.offsetX, e.offsetY);
-    startedDrawing = false;
-  } else if (startedDrawing && tool === "circle") {
-    drawCircle(firstXCoord, firstYCoord, e.offsetX, e.offsetY);
-    startedDrawing = false;
-  }
-});
 
-const pencil = document.getElementById("pencil");
-const line = document.getElementById("line");
-const spray = document.getElementById("spray");
-const eraser = document.getElementById("eraser");
-const rectangle = document.getElementById("rectangle");
-const circle = document.getElementById("circle");
-const save = document.getElementById("save");
-const savedContainer = document.getElementById("saved");
+    if (this.currentTool === "spray" || this.currentTool === "eraser") {
+      this.ctx.lineWidth = 30;
+    } else {
+      this.ctx.lineWidth = 3;
+    }
 
-const snapshots = JSON.parse(localStorage.getItem("snapshots")) || [];
+    if (
+      this.currentTool === "pencil" ||
+      this.currentTool === "spray" ||
+      this.currentTool === "eraser"
+    ) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.lastX, this.lastY);
+      this.ctx.lineTo(e.offsetX, e.offsetY);
+      this.ctx.stroke();
 
-snapshots.forEach((snapshot) => {
-  const div = document.createElement("img");
-  div.src = snapshot;
-  div.classList.add("mr-2");
-  savedContainer.insertBefore(div, savedContainer.firstChild);
-});
+      [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
+    }
+  },
 
-let tool = "pencil";
+  drawBox(x1, y1, x2, y2) {
+    this.ctx.strokeStyle = color.value;
+    this.ctx.beginPath();
+    this.ctx.rect(x1, y1, x2 - x1, y2 - y1);
+    this.ctx.globalAlpha = opacity.value / 100;
+    this.ctx.stroke();
+  },
 
-pencil.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#000000";
-  ctx.lineWidth = 3;
+  drawCircle(x1, y1, x2, y2) {
+    this.ctx.strokeStyle = color.value;
+    this.ctx.beginPath();
+    // radius is hypoteneus of a triangle if you're given x1,y1 and x2,y2
+    // from h^2 = x^2 + y^2, we can rearrange for the following equation:
+    const radius = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    this.ctx.arc(x1, y1, radius, 0, 2 * Math.PI);
+    this.ctx.globalAlpha = opacity.value / 100;
+    this.ctx.stroke();
+  },
 
-  tool = this.id;
-});
-line.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#000000";
-  ctx.lineWidth = 3;
+  handleMouseMove(plugin, e) {
+    this.continuous(e);
+  },
 
-  tool = this.id;
-});
-spray.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#BADA5555";
-  ctx.lineWidth = 100;
+  handleMouseDown(plugin, e) {
+    this.isDrawing = true;
 
-  tool = this.id;
-});
-eraser.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#FFFFFF";
-  ctx.lineWidth = 50;
+    [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
 
-  tool = this.id;
-});
-rectangle.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#000000";
-  ctx.lineWidth = 3;
+    if (
+      this.currentTool === "line" ||
+      this.currentTool === "rectangle" ||
+      this.currentTool === "circle"
+    ) {
+      if (!this.startedDrawing) {
+        this.firstXCoord = e.offsetX;
+        this.firstYCoord = e.offsetY;
+        this.startedDrawing = true;
+      }
+    }
+  },
 
-  tool = this.id;
-});
-circle.addEventListener("click", function (e) {
-  document.querySelector(".icon-selected").classList.remove("icon-selected");
-  this.classList.add("icon-selected");
-  ctx.strokeStyle = "#000000";
-  ctx.lineWidth = 3;
+  handleMouseUp(plugin, e) {
+    this.isDrawing = false;
+    if (this.startedDrawing && this.currentTool === "line") {
+      this.ctx.strokeStyle = this.color.value;
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.firstXCoord, this.firstYCoord);
+      this.ctx.lineTo(e.offsetX, e.offsetY);
+      this.ctx.globalAlpha = opacity.value / 100;
+      this.ctx.stroke();
+      this.startedDrawing = false;
+    } else if (this.startedDrawing && this.currentTool === "rectangle") {
+      this.drawBox(this.firstXCoord, this.firstYCoord, e.offsetX, e.offsetY);
+      this.startedDrawing = false;
+    } else if (this.startedDrawing && this.currentTool === "circle") {
+      this.drawCircle(this.firstXCoord, this.firstYCoord, e.offsetX, e.offsetY);
+      this.startedDrawing = false;
+    }
+  },
 
-  tool = this.id;
-});
-save.addEventListener("click", function () {
-  // convert canvas snapshot into data for a variable...
-  //  (( https://stackoverflow.com/questions/16792805/how-to-take-screenshot-of-canvas ))
-  var dataURL = canvas.toDataURL();
+  addEventListeners() {
+    this.canvas.addEventListener("mousemove", (e) =>
+      this.handleMouseMove(this, e)
+    );
+    this.canvas.addEventListener("mousedown", (e) =>
+      this.handleMouseDown(this, e)
+    );
+    this.canvas.addEventListener("mouseup", (e) => this.handleMouseUp(this, e));
+    this.canvas.addEventListener("mouseout", (e) =>
+      this.handleMouseUp(this, e)
+    );
 
-  // save image to localStorage...
-  // localStorage.setItem("snapshots", dataURL);
-  // JSON.stringify
-  snapshots.push(dataURL);
-  console.log(snapshots);
-  localStorage.setItem("snapshots", JSON.stringify(snapshots));
-  // localStorage.getItem
-  // localStorage.removeItem
+    this.pencil.addEventListener("click", (e) => this.selectTool("pencil"));
+    this.line.addEventListener("click", (e) => this.selectTool("line"));
+    this.spray.addEventListener("click", (e) => this.selectTool("spray"));
+    this.eraser.addEventListener("click", (e) => this.selectTool("eraser"));
+    this.rect.addEventListener("click", (e) => this.selectTool("rectangle"));
+    this.circle.addEventListener("click", (e) => this.selectTool("circle"));
+    this.save.addEventListener("click", (e) => this.selectTool("save"));
+  },
 
-  console.log("savedContainer is:");
-  console.log(savedContainer);
-  // console.log(dataURL);
-  // add div to .savedContainer...
-  const div = document.createElement("img");
-  div.src = dataURL;
-  div.classList.add("mr-2");
-  savedContainer.insertBefore(div, savedContainer.firstChild);
-});
+  addImage() {
+    const unsplash = new Unsplash({
+      accessKey: "o0avfKVPQoV6zetDnqiHvpJFarmw5phI8DOeLPreoF0",
+    });
 
-const color = document.getElementById("color");
-const opacity = document.getElementById("opacity");
+    const plugin = this;
+    unsplash.photos
+      .getRandomPhoto({ query: "face" })
+      .then(toJson)
+      .then((json) => {
+        console.log(json.urls.small);
 
-const test = document.getElementById("test");
+        var image = new Image();
 
-function newImage() {
-  $.ajax({
-    url: "https://randomuser.me/api/",
-    dataType: "json",
-    success: function (data) {
-      const src = data.results[0].picture.large;
-      console.log(src);
-      test.src = src;
-      // const image = new Image();
-      // image.src = data.results[0].picture.large;
-      ctx.drawImage(test, 0, 0);
-    },
-  });
-}
+        console.log(image);
 
-newImage();
+        image.onload = function () {
+          plugin.ctx.globalAlpha = 100 / 100;
+          plugin.ctx.drawImage(image, 0, 0, 800, 600);
+        };
+        image.src = json.urls.small;
+      });
+  },
 
-const newFace = document.getElementById("newface");
+  init() {
+    this.canvas.width = 800;
+    this.canvas.height = 600;
 
-newFace.addEventListener("click", function (e) {
-  newImage();
-  ctx.drawImage(test, 0, 0, 800, 600);
-});
+    this.ctx = this.canvas.getContext("2d");
+
+    // necessary?
+    this.ctx.strokeStyle = "#000000";
+
+    this.ctx.lineJoin = "round";
+    this.ctx.lineCap = "round";
+
+    // necessary?
+    this.ctx.lineWidth = 3;
+
+    this.addEventListeners();
+
+    this.addImage();
+  },
+};
+
+gimmeMoustache.init();

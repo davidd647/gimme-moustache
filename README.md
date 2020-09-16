@@ -4,6 +4,10 @@
 
 
 to-do:
+- load image at start...
+- delete pics
+- download pics
+
 - consider not drawing boxes or lines on mouseout? idunno... what ramifications will that have?
 - get images of people via API... ideas:
   BEST BET:
