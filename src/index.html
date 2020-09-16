@@ -16,14 +16,14 @@
   </head>
   <body style="background: #f3f3f3">
     <div class="container" style="max-width: 830px">
-      <h1>Gimme Moustache</h1>
-      <p>What's the best thing to draw? Moustaches on people.</p>
+      <h1 class="text-center py-5 my-5">Gimme Moustache</h1>
+      <p class="pt-3">What's the best thing to draw? Moustaches on people.</p>
       <p>
         Also, Gimme Moustache sounds like a command to kiss a dude with a
         moustache, which I guess is funny? 🤷‍♂️ I didn't notice this until after I
         named the repo. Oh well.
       </p>
-      <ol>
+      <ol class="mb-5 pb-5">
         <li>Click <a href="#" class="gm-newface">here</a> for a new face</li>
         <li>Draw a moustache on their face</li>
         <li>?????.... profit!!!</li>
@@ -51,7 +51,7 @@
         <div class="">
           <input type="color" id="color" name="head" value="#c4d7f8" />
         </div>
-        <div class="pl-3 d-flex align-items-center">
+        <div class="pl-5 d-flex align-items-center">
           <label class="pt-1 pr-1" for="opacity">Opacity:</label>
           <input
             id="opacity"
@@ -69,10 +69,10 @@
       </div>
       <canvas id="draw" style="background: #fff"></canvas>
       <button class="gm-newface btn btn-primary w-100">New Face</button>
-      <div id="saved" class="pt-3"></div>
+      <div id="saved" class="py-5 mb-5"></div>
     </div>
 
-    <div class="container pt-3" style="max-width: 830px">
+    <div class="container pt-5 mt-5" style="max-width: 830px">
       <h2>What is this?</h2>
 
       <p>
@@ -105,18 +105,24 @@
 
       <h2>Who made it?</h2>
 
-      <p>Me! David Dales.</p>
+      <p class="pb-5">Me! David Dales.</p>
 
-      <small>
-        Favicon made by
-        <a href="https://www.flaticon.local/authors/freepik" title="Freepik">
-          Freepik
-        </a>
-        from
-        <a href="https://www.flaticon.local/" title="Flaticon">
-          www.flaticon.local
-        </a>
-      </small>
+      <div class="pt-5">
+        <small>
+          Favicon made by
+          <a
+            href="https://www.flaticon.com/authors/freepik"
+            target="_blank"
+            title="Freepik"
+          >
+            Freepik
+          </a>
+          from
+          <a href="https://www.flaticon.com/" target="_blank" title="Flaticon">
+            www.flaticon.com
+          </a>
+        </small>
+      </div>
     </div>
   </body>
   <script src="./index.js"></script>
