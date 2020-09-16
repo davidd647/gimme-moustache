@@ -9,16 +9,16 @@
     <link rel="stylesheet" href="styles.css" />
     <title>Gimme Moustache</title>
   </head>
-  <body style="background: #ddd;">
-    <div class="container">
+  <body style="background: #ddd">
+    <div class="container" style="max-width: 830px">
       <h1>Gimme Moustache</h1>
       <p>What's the best thing to draw? Moustaches on people.</p>
       <ol>
-        <li>Click <a href="#" id="newface">here</a> for a new face</li>
+        <li>Click <a href="#" class="gm-newface">here</a> for a new face</li>
         <li>Draw a moustache on their face</li>
         <li>?????.... profit!!!</li>
       </ol>
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <div class="icon-container icon-selected" id="pencil">
           <img class="p-1" src="icons/pencil.png" alt="Pencil" />
         </div>
@@ -37,19 +37,28 @@
         <div class="icon-container" id="circle">
           <img class="p-1" src="icons/circle.png" alt="Circle" />
         </div>
+        <div style="width: 100%"></div>
         <div class="">
-          <input type="color" id="color" name="head"
-            value="#c4d7f8">
+          <input type="color" id="color" name="head" value="#c4d7f8" />
         </div>
-        <div class="">
-          <label for="opacity">Opacity:</label>
-          <input id="opacity" type="range" id="vol" name="vol" min="0" max="100" value="100">
+        <div class="pl-3 d-flex align-items-center">
+          <label class="pt-1 pr-1" for="opacity">Opacity:</label>
+          <input
+            id="opacity"
+            type="range"
+            id="vol"
+            name="vol"
+            min="0"
+            max="100"
+            value="100"
+          />
         </div>
         <div class="icon-container d-none" id="save">
           <img class="p-1" src="icons/save.png" alt="Save" />
         </div>
       </div>
       <canvas id="draw" style="background: #fff"></canvas>
+      <button class="gm-newface btn btn-primary w-100">New Face</button>
       <div id="saved" class="pt-3 d-none"></div>
     </div>
 
@@ -87,20 +96,16 @@
       <h2>Who made it?</h2>
 
       <p>Me! David Dales.</p>
-      
+
       <small>
-        <p>
-          <div>
-            Icons made by 
-            <a href="https://www.flaticon.local/authors/freepik" title="Freepik">
-              Freepik
-            </a> 
-            from 
-            <a href="https://www.flaticon.local/" title="Flaticon">
-              www.flaticon.local
-            </a>
-          </div>
-        </p>
+        Favicon made by
+        <a href="https://www.flaticon.local/authors/freepik" title="Freepik">
+          Freepik
+        </a>
+        from
+        <a href="https://www.flaticon.local/" title="Flaticon">
+          www.flaticon.local
+        </a>
       </small>
     </div>
   </body>

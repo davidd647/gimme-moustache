@@ -18,8 +18,10 @@ var gimmeMoustache = {
   eraser: document.getElementById("eraser"),
   rect: document.getElementById("rectangle"),
   circle: document.getElementById("circle"),
-  save: document.getElementById("save"),
+  saveEl: document.getElementById("save"),
   savedContainer: document.getElementById("saved"),
+
+  newface: document.querySelectorAll(".gm-newface"),
 
   color: document.getElementById("color"),
   opacity: document.getElementById("opacity"),
@@ -28,14 +30,7 @@ var gimmeMoustache = {
   currentTool: "pencil",
   isDrawing: false,
 
-  selectTool(toolSelected) {
-    document.querySelector(".icon-selected").classList.remove("icon-selected");
-    document.getElementById(toolSelected).classList.add("icon-selected");
-
-    this.currentTool = toolSelected;
-  },
-
-  continuousDraw(e) {
+  continuous(e) {
     if (!this.isDrawing) return;
 
     if (this.currentTool === "spray" || this.currentTool === "pencil") {
@@ -126,6 +121,34 @@ var gimmeMoustache = {
     }
   },
 
+  selectTool(toolSelected) {
+    document.querySelector(".icon-selected").classList.remove("icon-selected");
+    document.getElementById(toolSelected).classList.add("icon-selected");
+
+    this.currentTool = toolSelected;
+  },
+
+  save() {
+    // this document says you can't use toDataURL after drawImage...
+    // https://stackoverflow.com/questions/23221273/why-in-canvasjs-todataurl-doesnt-work-after-drawimage
+    // and it's for security reasons... but I don't know why
+    // this would cause a security problem...
+
+    console.log("save");
+    // drawImage and then toDataURL
+    // Uncaught DOMException:
+    // Failed to execute 'toDataURL' on 'HTMLCanvasElement':
+    // Tainted canvases may not be exported.
+    var dataURL = this.canvas.toDataURL();
+
+    snapshots.push(dataURL);
+    localStorage.setItem("snapshots", JSON.stringify(snapshots));
+    const div = document.createElement("img");
+    div.src = dataURL;
+    div.classList.add("mr-2");
+    savedContainer.insertBefore(div, savedContainer.firstChild);
+  },
+
   addEventListeners() {
     this.canvas.addEventListener("mousemove", (e) =>
       this.handleMouseMove(this, e)
@@ -144,15 +167,28 @@ var gimmeMoustache = {
     this.eraser.addEventListener("click", (e) => this.selectTool("eraser"));
     this.rect.addEventListener("click", (e) => this.selectTool("rectangle"));
     this.circle.addEventListener("click", (e) => this.selectTool("circle"));
-    this.save.addEventListener("click", (e) => this.selectTool("save"));
+    this.saveEl.addEventListener("click", () => {
+      console.log("click registered...");
+      this.save();
+    });
+
+    this.newface.forEach((newface) => {
+      newface.addEventListener("click", () => {
+        console.log("hi");
+        this.addImage();
+      });
+    });
+    // this.newface.addEventListener("click", this.addImage);
   },
 
   addImage() {
+    console.log("huh");
     const unsplash = new Unsplash({
       accessKey: "o0avfKVPQoV6zetDnqiHvpJFarmw5phI8DOeLPreoF0",
     });
 
     const plugin = this;
+    console.log(this);
     unsplash.photos
       .getRandomPhoto({ query: "face" })
       .then(toJson)
@@ -188,7 +224,7 @@ var gimmeMoustache = {
 
     this.addEventListeners();
 
-    this.addImage();
+    // this.addImage();
   },
 };
 
