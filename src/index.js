@@ -224,7 +224,7 @@ var gimmeMoustache = {
 
     this.addEventListeners();
 
-    // this.addImage();
+    this.addImage();
   },
 };
 
