@@ -143,7 +143,19 @@ var gimmeMoustache = {
     var dataURL = this.canvas.toDataURL();
 
     this.snapshots.push(dataURL);
-    localStorage.setItem("snapshots", JSON.stringify(this.snapshots));
+    var failed = false;
+    try {
+      localStorage.setItem("snapshots", JSON.stringify(this.snapshots));
+    } catch (err) {
+      this.snapshots.pop();
+      alert(
+        "Save failed. Please make space to save more pics by deleting old pics"
+      );
+      failed = true;
+    }
+
+    if (failed) return;
+
     const div = document.createElement("img");
     div.src = dataURL;
     div.classList.add("mr-2");
@@ -206,10 +218,27 @@ var gimmeMoustache = {
       });
     });
     // this.newface.addEventListener("click", this.addImage);
+
+    this.savedContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("delete")) {
+        console.log("deleting...");
+        // identify the image in the array...
+        var toDelete = e.target.parentNode.id;
+        console.log(toDelete);
+        // delete the HTML...
+        this.savedContainer.innerHTML = "";
+        // delete the image from the array...
+        this.snapshots.splice(toDelete, 1);
+
+        // re-populate the HTML
+        this.populateSnapshots();
+        // update localStorage...
+        localStorage.setItem("snapshots", JSON.stringify(this.snapshots));
+      }
+    });
   },
 
   addImage() {
-    console.log("huh");
     const unsplash = new Unsplash({
       accessKey: "o0avfKVPQoV6zetDnqiHvpJFarmw5phI8DOeLPreoF0",
     });
@@ -235,6 +264,27 @@ var gimmeMoustache = {
       });
   },
 
+  populateSnapshots() {
+    this.snapshots.forEach((snapshot, i) => {
+      const div = document.createElement("div");
+      div.classList.add("mr-2");
+      div.classList.add("gm-thumb");
+      div.id = i;
+
+      const img = document.createElement("img");
+      img.src = snapshot;
+
+      const del = document.createElement("div");
+      del.classList.add("delete");
+      del.innerText = "X";
+
+      div.appendChild(img);
+      div.appendChild(del);
+
+      this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
+    });
+  },
+
   init() {
     this.canvas.width = 800;
     this.canvas.height = 600;
@@ -254,14 +304,9 @@ var gimmeMoustache = {
 
     this.snapshots = JSON.parse(localStorage.getItem("snapshots")) || [];
 
-    this.snapshots.forEach((snapshot) => {
-      const div = document.createElement("img");
-      div.src = snapshot;
-      div.classList.add("mr-2");
-      this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
-    });
+    this.populateSnapshots();
 
-    this.addImage();
+    // this.addImage();
   },
 };
 
