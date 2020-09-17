@@ -34,8 +34,21 @@ h1 {
   position: absolute;
   left: 0;
   top: 0;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.download {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
   background: rgba(255, 255, 255, 0.6);
   display: flex;
   justify-content: center;
@@ -44,5 +57,5 @@ h1 {
 }
 
 #saved img {
-  max-width: 200px;
+  max-width: 195px;
 }
