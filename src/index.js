@@ -156,10 +156,8 @@ var gimmeMoustache = {
 
     if (failed) return;
 
-    const div = document.createElement("img");
-    div.src = dataURL;
-    div.classList.add("mr-2");
-    this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
+    this.savedContainer.innerHTML = "";
+    this.populateSnapshots();
   },
 
   addEventListeners() {
@@ -234,6 +232,17 @@ var gimmeMoustache = {
         this.populateSnapshots();
         // update localStorage...
         localStorage.setItem("snapshots", JSON.stringify(this.snapshots));
+      } else if (e.target.classList.contains("download")) {
+        console.log("downloading...");
+        var toDownload = e.target.parentNode.id;
+
+        var downloadLink = document.createElement("a");
+        downloadLink.href = this.snapshots[toDownload];
+        downloadLink.download = "gimme-moustache.png";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
       }
     });
   },
@@ -276,10 +285,22 @@ var gimmeMoustache = {
 
       const del = document.createElement("div");
       del.classList.add("delete");
-      del.innerText = "X";
+      del.classList.add("fas");
+      del.classList.add("fa-backspace");
+      del.classList.add("m-2");
+
+      const download = document.createElement("div");
+      download.classList.add("download");
+      download.classList.add("fas");
+      download.classList.add("fa-download");
+      download.classList.add("m-2");
 
       div.appendChild(img);
       div.appendChild(del);
+      div.appendChild(download);
+
+      // <i class="fas fa-backspace"></i>
+      // <i class="fas fa-download"></i>
 
       this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
     });
@@ -306,7 +327,7 @@ var gimmeMoustache = {
 
     this.populateSnapshots();
 
-    // this.addImage();
+    this.addImage();
   },
 };
 
