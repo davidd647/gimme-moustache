@@ -13,8 +13,3 @@
   - Open a browser to localhost:1234
 
 - - - 
-
-## To-do:
-- make saved images downloadable
-- be able to delete images off of the thing
-- is it even possible to go mobile friendly? might have to wait and see what the competition manages to do...
