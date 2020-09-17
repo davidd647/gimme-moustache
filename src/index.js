@@ -308,7 +308,7 @@ var gimmeMoustache = {
 
     this.populateSnapshots();
 
-    // this.addImage();
+    this.addImage();
   },
 };
 
