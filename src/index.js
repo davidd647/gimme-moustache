@@ -130,16 +130,6 @@ var gimmeMoustache = {
   },
 
   save() {
-    // this document says you can't use toDataURL after drawImage...
-    // https://stackoverflow.com/questions/23221273/why-in-canvasjs-todataurl-doesnt-work-after-drawimage
-    // and it's for security reasons... but I don't know why
-    // this would cause a security problem...
-
-    console.log("save");
-    // drawImage and then toDataURL
-    // Uncaught DOMException:
-    // Failed to execute 'toDataURL' on 'HTMLCanvasElement':
-    // Tainted canvases may not be exported.
     var dataURL = this.canvas.toDataURL();
 
     this.snapshots.push(dataURL);
@@ -215,7 +205,6 @@ var gimmeMoustache = {
         this.addImage();
       });
     });
-    // this.newface.addEventListener("click", this.addImage);
 
     this.savedContainer.addEventListener("click", (e) => {
       if (e.target.classList.contains("delete")) {
@@ -299,9 +288,6 @@ var gimmeMoustache = {
       div.appendChild(del);
       div.appendChild(download);
 
-      // <i class="fas fa-backspace"></i>
-      // <i class="fas fa-download"></i>
-
       this.savedContainer.insertBefore(div, this.savedContainer.firstChild);
     });
   },
@@ -311,14 +297,9 @@ var gimmeMoustache = {
     this.canvas.height = 600;
 
     this.ctx = this.canvas.getContext("2d");
-
-    // necessary?
     this.ctx.strokeStyle = "#000000";
-
     this.ctx.lineJoin = "round";
     this.ctx.lineCap = "round";
-
-    // necessary?
     this.ctx.lineWidth = 3;
 
     this.addEventListeners();
@@ -327,8 +308,23 @@ var gimmeMoustache = {
 
     this.populateSnapshots();
 
-    this.addImage();
+    // this.addImage();
   },
 };
 
 gimmeMoustache.init();
+
+//////////////////////////////////////////
+// alert user to use app on desk/laptop
+
+function isMobileDevice() {
+  return (
+    typeof window.orientation !== "undefined" ||
+    navigator.userAgent.indexOf("IEMobile") !== -1
+  );
+}
+
+var isMobile = isMobileDevice();
+if (isMobile) {
+  document.getElementById("desktop-alert").classList.remove("d-none");
+}
