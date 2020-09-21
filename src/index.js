@@ -181,6 +181,7 @@ var gimmeMoustache = {
 
     // touch screens
     this.canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
       // var touch = e.touches[0];
       // var mouseEvent = new MouseEvent("mousemove", {
       //   clientX: touch.clientX,
@@ -192,7 +193,7 @@ var gimmeMoustache = {
     this.canvas.addEventListener("touchstart", (e) => {
       this.handleMouseDown(this, e);
 
-      // e.preventDefault();
+      e.preventDefault();
       // e.stopPropagation();
       // mousePos = getTouchPos(e);
       // touch.clientX = mousePos.x;
@@ -205,6 +206,7 @@ var gimmeMoustache = {
       // canvas.dispatchEvent(mouseEvent);
     });
     this.canvas.addEventListener("touchend", (e) => {
+      e.preventDefault();
       this.handleMouseUp(this, e);
       // var mouseEvent = new MouseEvent("mouseup", {});
       // canvas.dispatchEvent(mouseEvent);
