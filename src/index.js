@@ -89,8 +89,8 @@ var gimmeMoustache = {
 
   getMousePositionOnCanvas(e) {
     console.log(e);
-    const clientX = e.offsetX || e.touches[0].clientX - e.target.offsetLeft;
-    const clientY = e.offsetY || e.touches[0].clientY - e.target.offsetTop;
+    const clientX = e.offsetX || e.touches[0].clientX - this.canvas.offsetLeft;
+    const clientY = e.offsetY || e.touches[0].clientY - this.canvas.offsetTop;
     const { offsetX, offsetY } = e;
     const canvasX = offsetX; // - offsetLeft;
     const canvasY = offsetY; // - offsetTop;
