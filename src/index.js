@@ -150,6 +150,16 @@ var gimmeMoustache = {
     this.populateSnapshots();
   },
 
+  getTouchPos(e) {
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    const { offsetLeft, offsetTop } = e.target;
+    const canvasX = clientX - offsetLeft;
+    const canvasY = clientY - offsetTop;
+
+    return { x: canvasX, y: canvasY };
+  },
+
   addEventListeners() {
     // desk/laptops
     this.canvas.addEventListener("mousemove", (e) =>
@@ -175,8 +185,10 @@ var gimmeMoustache = {
     this.canvas.addEventListener("touchstart", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      mousePos = getTouchPos(canvas, e);
-      var touch = e.touches[0];
+      mousePos = getTouchPos(e);
+      touch.clientX = mousePos.x;
+      touch.clientY = mousePos.y;
+      // var touch = e.touches[0];
       var mouseEvent = new MouseEvent("mousedown", {
         clientX: touch.clientX,
         clientY: touch.clientY,
