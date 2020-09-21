@@ -55,10 +55,10 @@ var gimmeMoustache = {
     ) {
       this.ctx.beginPath();
       this.ctx.moveTo(this.lastX, this.lastY);
-      this.ctx.lineTo(e.offsetX, e.offsetY);
+      const mousePos = this.getMousePositionOnCanvas(e);
+      this.ctx.lineTo(mousePos.x, mousePos.y);
       this.ctx.stroke();
 
-      const mousePos = this.getMousePositionOnCanvas(e);
       // [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
       [this.lastX, this.lastY] = [mousePos.x, mousePos.y];
     }
@@ -88,13 +88,14 @@ var gimmeMoustache = {
   },
 
   getMousePositionOnCanvas(e) {
-    const clientX = e.clientX || e.touches[0].clientX;
-    const clientY = e.clientY || e.touches[0].clientY;
-    const { offsetX, offsetY } = e.target;
-    const canvasX = clientX + offsetX; // - offsetLeft;
-    const canvasY = clientY + offsetY; // - offsetTop;
+    // console.log(e);
+    const clientX = e.offsetX || e.touches[0].clientX;
+    const clientY = e.offsetY || e.touches[0].clientY;
+    const { offsetX, offsetY } = e;
+    const canvasX = offsetX; // - offsetLeft;
+    const canvasY = offsetY; // - offsetTop;
 
-    return { x: canvasX, y: canvasY };
+    return { x: offsetX, y: offsetY };
   },
 
   handleMouseDown(plugin, e) {
@@ -102,6 +103,7 @@ var gimmeMoustache = {
 
     // get mouse position on canvas...
     const mousePos = this.getMousePositionOnCanvas(e);
+    console.log(mousePos);
     [this.lastX, this.lastY] = [mousePos.x, mousePos.y];
     // console.log(this.lastX, this.lastY);
     // [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
@@ -125,15 +127,20 @@ var gimmeMoustache = {
       this.ctx.strokeStyle = this.color.value;
       this.ctx.beginPath();
       this.ctx.moveTo(this.firstXCoord, this.firstYCoord);
-      this.ctx.lineTo(e.offsetX, e.offsetY);
+      this.ctx.lineTo(mousePos.x, mousePos.y);
       this.ctx.globalAlpha = opacity.value / 100;
       this.ctx.stroke();
       this.startedDrawing = false;
     } else if (this.startedDrawing && this.currentTool === "rectangle") {
-      this.drawBox(this.firstXCoord, this.firstYCoord, e.offsetX, e.offsetY);
+      this.drawBox(this.firstXCoord, this.firstYCoord, mousePos.x, mousePos.y);
       this.startedDrawing = false;
     } else if (this.startedDrawing && this.currentTool === "circle") {
-      this.drawCircle(this.firstXCoord, this.firstYCoord, e.offsetX, e.offsetY);
+      this.drawCircle(
+        this.firstXCoord,
+        this.firstYCoord,
+        mousePos.x,
+        mousePos.y
+      );
       this.startedDrawing = false;
     }
   },
@@ -182,34 +189,15 @@ var gimmeMoustache = {
     // touch screens
     this.canvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
-      // var touch = e.touches[0];
-      // var mouseEvent = new MouseEvent("mousemove", {
-      //   clientX: touch.clientX,
-      //   clientY: touch.clientY,
-      // });
-      // canvas.dispatchEvent(mouseEvent);
       this.handleMouseMove(this, e);
     });
     this.canvas.addEventListener("touchstart", (e) => {
-      this.handleMouseDown(this, e);
-
       e.preventDefault();
-      // e.stopPropagation();
-      // mousePos = getTouchPos(e);
-      // touch.clientX = mousePos.x;
-      // touch.clientY = mousePos.y;
-      // // var touch = e.touches[0];
-      // var mouseEvent = new MouseEvent("mousedown", {
-      //   clientX: touch.clientX,
-      //   clientY: touch.clientY,
-      // });
-      // canvas.dispatchEvent(mouseEvent);
+      this.handleMouseDown(this, e);
     });
     this.canvas.addEventListener("touchend", (e) => {
       e.preventDefault();
       this.handleMouseUp(this, e);
-      // var mouseEvent = new MouseEvent("mouseup", {});
-      // canvas.dispatchEvent(mouseEvent);
     });
 
     this.pencil.addEventListener("click", (e) => this.selectTool("pencil"));
