@@ -58,7 +58,9 @@ var gimmeMoustache = {
       this.ctx.lineTo(e.offsetX, e.offsetY);
       this.ctx.stroke();
 
-      [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
+      const mousePos = this.getMousePositionOnCanvas(e);
+      // [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
+      [this.lastX, this.lastY] = [mousePos.x, mousePos.y];
     }
   },
 
@@ -85,10 +87,24 @@ var gimmeMoustache = {
     this.continuous(e);
   },
 
+  getMousePositionOnCanvas(e) {
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    const { offsetX, offsetY } = e.target;
+    const canvasX = clientX + offsetX; // - offsetLeft;
+    const canvasY = clientY + offsetY; // - offsetTop;
+
+    return { x: canvasX, y: canvasY };
+  },
+
   handleMouseDown(plugin, e) {
     this.isDrawing = true;
 
-    [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
+    // get mouse position on canvas...
+    const mousePos = this.getMousePositionOnCanvas(e);
+    [this.lastX, this.lastY] = [mousePos.x, mousePos.y];
+    // console.log(this.lastX, this.lastY);
+    // [this.lastX, this.lastY] = [e.offsetX, e.offsetY];
 
     if (
       this.currentTool === "line" ||
@@ -150,16 +166,6 @@ var gimmeMoustache = {
     this.populateSnapshots();
   },
 
-  getTouchPos(e) {
-    const clientX = e.clientX || e.touches[0].clientX;
-    const clientY = e.clientY || e.touches[0].clientY;
-    const { offsetLeft, offsetTop } = e.target;
-    const canvasX = clientX - offsetLeft;
-    const canvasY = clientY - offsetTop;
-
-    return { x: canvasX, y: canvasY };
-  },
-
   addEventListeners() {
     // desk/laptops
     this.canvas.addEventListener("mousemove", (e) =>
@@ -175,29 +181,33 @@ var gimmeMoustache = {
 
     // touch screens
     this.canvas.addEventListener("touchmove", (e) => {
-      var touch = e.touches[0];
-      var mouseEvent = new MouseEvent("mousemove", {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-      });
-      canvas.dispatchEvent(mouseEvent);
+      // var touch = e.touches[0];
+      // var mouseEvent = new MouseEvent("mousemove", {
+      //   clientX: touch.clientX,
+      //   clientY: touch.clientY,
+      // });
+      // canvas.dispatchEvent(mouseEvent);
+      this.handleMouseMove(this, e);
     });
     this.canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      mousePos = getTouchPos(e);
-      touch.clientX = mousePos.x;
-      touch.clientY = mousePos.y;
-      // var touch = e.touches[0];
-      var mouseEvent = new MouseEvent("mousedown", {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-      });
-      canvas.dispatchEvent(mouseEvent);
+      this.handleMouseDown(this, e);
+
+      // e.preventDefault();
+      // e.stopPropagation();
+      // mousePos = getTouchPos(e);
+      // touch.clientX = mousePos.x;
+      // touch.clientY = mousePos.y;
+      // // var touch = e.touches[0];
+      // var mouseEvent = new MouseEvent("mousedown", {
+      //   clientX: touch.clientX,
+      //   clientY: touch.clientY,
+      // });
+      // canvas.dispatchEvent(mouseEvent);
     });
     this.canvas.addEventListener("touchend", (e) => {
-      var mouseEvent = new MouseEvent("mouseup", {});
-      canvas.dispatchEvent(mouseEvent);
+      this.handleMouseUp(this, e);
+      // var mouseEvent = new MouseEvent("mouseup", {});
+      // canvas.dispatchEvent(mouseEvent);
     });
 
     this.pencil.addEventListener("click", (e) => this.selectTool("pencil"));
