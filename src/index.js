@@ -88,14 +88,14 @@ var gimmeMoustache = {
   },
 
   getMousePositionOnCanvas(e) {
-    // console.log(e);
+    console.log(e);
     const clientX = e.offsetX || e.touches[0].clientX;
     const clientY = e.offsetY || e.touches[0].clientY;
     const { offsetX, offsetY } = e;
     const canvasX = offsetX; // - offsetLeft;
     const canvasY = offsetY; // - offsetTop;
 
-    return { x: offsetX, y: offsetY };
+    return { x: clientX, y: clientY };
   },
 
   handleMouseDown(plugin, e) {
