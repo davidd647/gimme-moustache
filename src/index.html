@@ -21,10 +21,6 @@
   <body style="background: #f3f3f3">
     <div class="container" style="max-width: 830px">
       <h1 class="text-center py-5 my-5">Gimme Moustache</h1>
-      <h2 id="desktop-alert" class="text-danger d-none">
-        Please use this app on a desktop or laptop (canvas does not work on
-        mobile)
-      </h2>
       <p class="pt-3">What's the best thing to draw? Moustaches on people.</p>
       <p>
         Also, Gimme Moustache sounds like a command to kiss a dude with a
@@ -36,43 +32,47 @@
         <li>Draw a moustache on their face</li>
         <li>?????.... profit!!!</li>
       </ol>
-      <div class="d-flex align-items-center">
-        <div class="icon-container icon-selected" id="pencil">
-          <img class="p-1" src="icons/pencil.png" alt="Pencil" />
+      <div class="">
+        <div class="px-2 d-flex align-items-center">
+          <div class="icon-container icon-selected" id="pencil">
+            <img class="p-1" src="icons/pencil.png" alt="Pencil" />
+          </div>
+          <div class="icon-container" id="line">
+            <img class="p-1" src="icons/line.png" alt="Line" />
+          </div>
+          <div class="icon-container" id="spray">
+            <img class="p-1" src="icons/spray.png" alt="Spray Paint" />
+          </div>
+          <div class="icon-container" id="eraser">
+            <img class="p-1" src="icons/eraser.png" alt="Eraser" />
+          </div>
+          <div class="icon-container" id="rectangle">
+            <img class="p-1" src="icons/box.png" alt="Rectangle" />
+          </div>
+          <div class="icon-container" id="circle">
+            <img class="p-1" src="icons/circle.png" alt="Circle" />
+          </div>
+          <div style="width: 100%"></div>
+          <div class="">
+            <input type="color" id="color" name="head" value="#c4d7f8" />
+          </div>
         </div>
-        <div class="icon-container" id="line">
-          <img class="p-1" src="icons/line.png" alt="Line" />
-        </div>
-        <div class="icon-container" id="spray">
-          <img class="p-1" src="icons/spray.png" alt="Spray Paint" />
-        </div>
-        <div class="icon-container" id="eraser">
-          <img class="p-1" src="icons/eraser.png" alt="Eraser" />
-        </div>
-        <div class="icon-container" id="rectangle">
-          <img class="p-1" src="icons/box.png" alt="Rectangle" />
-        </div>
-        <div class="icon-container" id="circle">
-          <img class="p-1" src="icons/circle.png" alt="Circle" />
-        </div>
-        <div style="width: 100%"></div>
-        <div class="">
-          <input type="color" id="color" name="head" value="#c4d7f8" />
-        </div>
-        <div class="pl-5 d-flex align-items-center">
-          <label class="pt-1 pr-1" for="opacity">Opacity:</label>
-          <input
-            id="opacity"
-            type="range"
-            id="vol"
-            name="vol"
-            min="0"
-            max="100"
-            value="100"
-          />
-        </div>
-        <div class="icon-container" id="save">
-          <img class="p-1" src="icons/save.png" alt="Save" />
+        <div class="px-2 d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <label class="pt-1 pr-1" for="opacity">Opacity:</label>
+            <input
+              id="opacity"
+              type="range"
+              id="vol"
+              name="vol"
+              min="0"
+              max="100"
+              value="100"
+            />
+          </div>
+          <div class="icon-container" id="save">
+            <img class="p-1" src="icons/save.png" alt="Save" />
+          </div>
         </div>
       </div>
       <canvas id="draw" style="background: #fff"></canvas>

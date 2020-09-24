@@ -271,7 +271,13 @@ var gimmeMoustache = {
 
         image.onload = function () {
           plugin.ctx.globalAlpha = 100 / 100;
-          plugin.ctx.drawImage(image, 0, 0, 800, 600);
+          plugin.ctx.drawImage(
+            image,
+            0,
+            0,
+            plugin.canvas.width,
+            plugin.canvas.height
+          );
         };
         image.src = json.urls.small;
       });
@@ -307,9 +313,9 @@ var gimmeMoustache = {
     });
   },
 
-  init() {
-    this.canvas.width = 800;
-    this.canvas.height = 600;
+  init(settings) {
+    this.canvas.width = settings.width || 800;
+    this.canvas.height = settings.height || 600;
 
     this.ctx = this.canvas.getContext("2d");
     this.ctx.strokeStyle = "#000000";
@@ -327,10 +333,7 @@ var gimmeMoustache = {
   },
 };
 
-gimmeMoustache.init();
-
-//////////////////////////////////////////
-// alert user to use app on desk/laptop
+var settings = {};
 
 function isMobileDevice() {
   return (
@@ -341,5 +344,8 @@ function isMobileDevice() {
 
 var isMobile = isMobileDevice();
 if (isMobile) {
-  document.getElementById("desktop-alert").classList.remove("d-none");
+  settings.width = 345;
+  settings.height = 350;
 }
+
+gimmeMoustache.init(settings);
