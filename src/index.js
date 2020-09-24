@@ -27,7 +27,7 @@ var gimmeMoustache = {
   opacity: document.getElementById("opacity"),
 
   // default tool
-  currentTool: "pencil",
+  currentTool: "spray",
   isDrawing: false,
   snapshots: [],
 
